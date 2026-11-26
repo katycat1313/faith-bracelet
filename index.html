@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handcrafted Story of Faith Bracelet | Order Online</title>
+  <meta name="description" content="Order a handcrafted beaded faith bracelet. Each piece comes mounted on a commemorative story card. Perfect for gifts, church groups, and daily encouragement.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Announcement -->
+  <aside class="announcement-bar" aria-label="Order Notice">
+    <div class="announcement-content">
+      <span class="pulse-dot" aria-hidden="true"></span>
+      <p>Handmade with care &bull; Ready to ship &bull; Includes gift story card</p>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="#" class="brand-logo" aria-label="Home">
+        <span class="brand-name">FAITH &amp; GRACE</span>
+        <span class="brand-sub">HANDMADE GIFTS</span>
+      </a>
+      <div class="header-badge">
+        <span>Handmade by Mom</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Landmark -->
+  <main>
+    <!-- Product Hero Section -->
+    <section class="product-hero" aria-labelledby="product-heading">
+      <div class="container product-grid">
+        
+        <!-- Gallery / Photo Display -->
+        <div class="product-gallery">
+          <figure class="gallery-main-figure">
+            <img 
+              id="main-product-image" 
+              src="salvation-bracelet.jpg" 
+              alt="Handcrafted faith bracelet with colorful beads mounted on a custom presentation card" 
+              width="600" 
+              height="600" 
+              fetchpriority="high"
+            >
+            <div class="badge-overlay">
+              <span class="pill-badge">Handmade With Love</span>
+            </div>
+          </figure>
+        </div>
+
+        <!-- Product Details & Order Panel -->
+        <div class="product-details">
+          
+          <div class="social-proof-header">
+            <span class="stars" aria-hidden="true">★★★★★</span>
+            <span class="rating-text">Loved for gifts, family &amp; youth groups</span>
+          </div>
+
+          <h1 id="product-heading" class="product-title">Handcrafted Faith Story Bracelet</h1>
+          <p class="product-tagline">Mounted on Keepsake Story Card</p>
+
+          <!-- Price Display -->
+          <div class="price-container">
+            <span class="sale-price" id="display-price">$10.00</span>
+            <span class="discount-pill">Story Card Included</span>
+          </div>
+
+          <p class="product-description">
+            Each bracelet is individually handcrafted with vibrant beads and silver-tone accents. Mounted on a card sharing the meaningful message behind every color. An uplifting reminder and a meaningful gift for loved ones, grandchildren, baptisms, or church groups.
+          </p>
+
+          <!-- Bead Color Meanings Card -->
+          <div class="color-meaning-box">
+            <h2 class="meaning-title">The Story Behind the Colors</h2>
+            <ul class="meaning-list">
+              <li><span class="color-badge badge-black" aria-hidden="true"></span> <strong>Dark Bead:</strong> Remembering human shortcomings and need for grace</li>
+              <li><span class="color-badge badge-red" aria-hidden="true"></span> <strong>Red Bead:</strong> The sacrifice and sacrificial love of Jesus</li>
+              <li><span class="color-badge badge-white" aria-hidden="true"></span> <strong>White Bead:</strong> Forgiveness, washing clean, and renewal</li>
+              <li><span class="color-badge badge-blue" aria-hidden="true"></span> <strong>Blue Bead:</strong> A new life of faith and spiritual journey</li>
+              <li><span class="color-badge badge-green" aria-hidden="true"></span> <strong>Green Bead:</strong> Ongoing spiritual growth and wisdom</li>
+              <li><span class="color-badge badge-gold" aria-hidden="true"></span> <strong>Gold Bead:</strong> The eternal promise of hope and joy in Heaven</li>
+            </ul>
+          </div>
+
+          <!-- Order Form / Action Block -->
+          <form id="order-form" class="purchase-form" onsubmit="return false;">
+            
+            <div class="quantity-row">
+              <div class="quantity-control-wrapper">
+                <label for="qty-input" class="option-label">Quantity:</label>
+                <div class="qty-stepper">
+                  <button type="button" id="qty-minus" class="qty-btn" aria-label="Decrease quantity">−</button>
+                  <input type="number" id="qty-input" name="quantity" value="1" min="1" max="25">
+                  <button type="button" id="qty-plus" class="qty-btn" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
+
+              <div class="total-summary">
+                <span class="total-label">Total:</span>
+                <span class="total-amount" id="calculated-total">$10.00</span>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons-group">
+              <button type="button" id="btn-order-modal" class="btn btn-primary btn-block">
+                <span>ORDER NOW</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+
+              <!-- Quick Text Message Order Button for Mobile -->
+              <a id="btn-sms-order" href="#" class="btn btn-secondary btn-block">
+                <span>💬 Quick Order via Text Message</span>
+              </a>
+            </div>
+
+            <div class="guarantee-grid">
+              <div class="guarantee-item">
+                <span>📦 Carefully Packed</span>
+              </div>
+              <div class="guarantee-item">
+                <span>💌 Card Attached</span>
+              </div>
+              <div class="guarantee-item">
+                <span>🤝 Handcrafted Locally</span>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Why People Love These Section -->
+    <section class="features-section" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section-heading text-center">
+          <span class="subheading">Meaningful &amp; Personal</span>
+          <h2 id="features-title">Why This Bracelet Makes a Special Gift</h2>
+        </header>
+
+        <div class="features-grid">
+          <article class="feature-card">
+            <h3>Ready for Gifting</h3>
+            <p>Every piece arrives neatly attached to the keepsake card with a dedicated name line, ready to present to someone special.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Comfortable &amp; Adjustable</h3>
+            <p>Strung on durable flexible cord designed to fit children, teens, and adults with ease and comfort.</p>
+          </article>
+
+          <article class="feature-card">
+            <h3>Great for Groups</h3>
+            <p>A favorite for Sunday school classes, vacation Bible school, confirmation, Easter baskets, or care packages.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Common Questions -->
+    <section class="faq-section" aria-labelledby="faq-title">
+      <div class="container faq-container">
+        <header class="section-heading text-center">
+          <span class="subheading">Got Questions?</span>
+          <h2 id="faq-title">Frequently Asked Questions</h2>
+        </header>
+
+        <div class="faq-accordion-group">
+          <details name="faq" open>
+            <summary>How do I pay for my order?</summary>
+            <div class="faq-content">
+              <p>You can pay easily using Venmo, Cash App, Zelle, or credit card. Once you submit your order, she will confirm with you and provide payment details.</p>
+            </div>
+          </details>
+
+          <details name="faq">
+            <summary>Can I order multiple bracelets for a group or class?</summary>
+            <div class="faq-content">
+              <p>Yes! Simply choose your desired quantity during checkout, or send a text with how many you need.</p>
+            </div>
+          </details>
+
+          <details name="faq">
+            <summary>How does shipping work?</summary>
+            <div class="faq-content">
+              <p>Orders are packaged with care and mailed via standard USPS with tracking, or available for local pickup if arranged.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky Bottom Bar on Mobile -->
+  <aside class="sticky-mobile-bar" aria-label="Mobile order bar">
+    <div class="sticky-bar-inner">
+      <div class="sticky-bar-info">
+        <span class="sticky-price" id="mobile-sticky-price">$10.00</span>
+        <span class="sticky-badge">Card Included</span>
+      </div>
+      <button type="button" id="btn-sticky-order" class="btn btn-primary btn-sticky">
+        ORDER NOW
+      </button>
+    </div>
+  </aside>
+
+  <!-- Checkout / Order Modal -->
+  <dialog id="checkout-modal" class="modal-dialog">
+    <div class="dialog-card">
+      <header class="dialog-header">
+        <div>
+          <h2>Order Your Bracelet</h2>
+          <p class="dialog-subtitle">Simple, friendly checkout</p>
+        </div>
+        <button type="button" id="btn-close-modal" class="btn-close" aria-label="Close modal">✕</button>
+      </header>
+
+      <div class="order-summary-box">
+        <div class="summary-line">
+          <span>Faith Story Bracelet (<span id="modal-qty">1</span>x)</span>
+          <strong id="modal-total-price">$10.00</strong>
+        </div>
+        <div class="summary-line">
+          <span>Presentation Card</span>
+          <span class="free-text">INCLUDED</span>
+        </div>
+      </div>
+
+      <!-- Easy Order Submission Form -->
+      <form id="customer-order-form" class="modal-form">
+        <fieldset class="form-fieldset">
+          <legend class="sr-only">Your Shipping &amp; Contact Information</legend>
+
+          <div class="form-row">
+            <label for="cust-name">Your Full Name *</label>
+            <input type="text" id="cust-name" name="name" required placeholder="Mary Smith" autocomplete="name">
+          </div>
+
+          <div class="form-row">
+            <label for="cust-phone">Your Phone Number *</label>
+            <input type="tel" id="cust-phone" name="phone" required placeholder="(555) 000-0000" autocomplete="tel">
+          </div>
+
+          <div class="form-row">
+            <label for="cust-address">Mailing Address (Street, City, State, ZIP) *</label>
+            <input type="text" id="cust-address" name="address" required placeholder="123 Main St, Springfield, IL 62701" autocomplete="street-address">
+          </div>
+
+          <div class="form-row">
+            <label for="cust-payment-pref">How would you prefer to pay? *</label>
+            <select id="cust-payment-pref" name="payment_method" class="form-select" required>
+              <option value="Venmo">Venmo</option>
+              <option value="Cash App">Cash App</option>
+              <option value="Zelle">Zelle</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Credit Card">Credit / Debit Card</option>
+              <option value="Cash / Local">Cash on Pickup / Local</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="cust-notes">Special Requests or Notes (Optional)</label>
+            <input type="text" id="cust-notes" name="notes" placeholder="e.g. Gift for Sunday School class">
+          </div>
+        </fieldset>
+
+        <div class="modal-actions">
+          <button type="submit" id="btn-submit-order" class="btn btn-primary btn-block">
+            SUBMIT ORDER REQUEST
+          </button>
+          <p class="dialog-guarantee">No upfront charge required right now &bull; She will contact you directly to confirm!</p>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Success Confirmation Modal -->
+  <dialog id="success-modal" class="modal-dialog">
+    <div class="dialog-card text-center">
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <h2>Order Request Received!</h2>
+      <p id="success-msg">Thank you so much! Your order has been recorded. She will reach out to your phone/email shortly with payment confirmation.</p>
+      
+      <!-- Payment Details Box for Immediate Convenience -->
+      <div class="payment-instructions-box" id="payment-instructions-box">
+        <h3>Ready to pay now?</h3>
+        <p>Send your total (<strong id="confirm-pay-amount">$10.00</strong>) via:</p>
+        <div class="payment-badges-list">
+          <div class="pay-option">
+            <strong>Venmo:</strong> <span id="display-venmo">@Your-Venmo-Handle</span>
+          </div>
+          <div class="pay-option">
+            <strong>Cash App:</strong> <span id="display-cashapp">$YourCashTag</span>
+          </div>
+          <div class="pay-option">
+            <strong>Zelle:</strong> <span id="display-zelle">your-phone-or-email</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="btn-done" class="btn btn-primary btn-block">Close</button>
+    </div>
+  </dialog>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <p class="footer-title">Handmade with care &bull; Faith &amp; Grace Gifts</p>
+      <p class="footer-desc">Thank you for supporting small, handcrafted gifts made with heart.</p>
+      <div class="footer-bottom">
+        <p>&copy; 2026 All Rights Reserved.</p>
+        <p class="powered-by">Published with GitHub Pages</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
