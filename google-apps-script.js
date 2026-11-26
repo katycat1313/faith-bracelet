@@ -23,7 +23,6 @@ function doPost(e) {
     }
     
     // Append the row to Google Sheets
-    // Columns match our exact orders-template.csv
     sheet.appendRow([
       data.orderId || ("ORD-" + new Date().getTime().toString(36).toUpperCase()),
       data.orderDate || new Date().toLocaleDateString("en-US", {
@@ -32,7 +31,7 @@ function doPost(e) {
       data.buyerName || "Anonymous",
       data.shippingAddress || "No address provided",
       Number(data.numberOfBracelets || 1),
-      data.totalPaid || "$10.00",
+      data.totalPaid || "Price TBD",
       data.paymentMethod || "Venmo",
       data.phone || "",
       data.specialNotes || "None",
@@ -60,7 +59,6 @@ function sendDailySummary() {
   var oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
   
   var totalBracelets = 0;
-  var totalRevenue = 0;
   var orderLines = [];
   
   // Loop through all orders (skip row 0 which is headers)
@@ -71,11 +69,7 @@ function sendDailySummary() {
     // If the order date is within the last 24 hours
     if (isNaN(orderDate.getTime()) || orderDate >= oneDayAgo) {
       var qty = Number(row[4]) || 1;
-      var revStr = String(row[5]).replace(/[^0-9.]/g, '');
-      var revenue = parseFloat(revStr) || 0;
-      
       totalBracelets += qty;
-      totalRevenue += revenue;
       orderLines.push("• " + row[2] + " - " + qty + " bracelet(s) to " + row[3] + " [" + row[6] + "]");
     }
   }
@@ -83,11 +77,10 @@ function sendDailySummary() {
   // REPLACE WITH HER REAL EMAIL ADDRESS:
   var recipientEmail = "mom@example.com";
   
-  var subject = "🌸 Daily Bracelet Sales: " + totalBracelets + " sold in last 24 hours ($" + totalRevenue.toFixed(2) + ")";
+  var subject = "🌸 Daily Bracelet Orders: " + totalBracelets + " bracelet(s) ordered in last 24 hours";
   var body = "Good evening!\n\n" +
              "Here is your 24-hour summary for The Salvation Bracelet:\n\n" +
-             "✨ Bracelets Sold in the Last 24 Hours: " + totalBracelets + "\n" +
-             "💵 Total Amount: $" + totalRevenue.toFixed(2) + "\n\n" +
+             "✨ Bracelets Ordered in the Last 24 Hours: " + totalBracelets + "\n\n" +
              (orderLines.length > 0 
                ? "📦 Orders to ship:\n" + orderLines.join("\n") 
                : "No new orders received in the past 24 hours.") +

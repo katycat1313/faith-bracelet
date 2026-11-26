@@ -382,9 +382,11 @@ button, input, select {
 }
 
 .sale-price {
-  font-size: clamp(2rem, 1.6rem + 1.5vw, 2.75rem);
-  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  font-weight: 600;
   color: var(--color-text-main);
+  letter-spacing: -0.01em;
 }
 
 .unit-note {

@@ -103,41 +103,37 @@
           <h1 id="product-heading" class="product-title">My Salvation Story Bracelet</h1>
           <p class="product-tagline">&ldquo;Each color tells part of God's story for me&rdquo;</p>
 
-          <!-- Pricing Section -->
+          <!-- Status / Inquire Banner (No hardcoded price) -->
           <div class="price-container">
-            <span class="sale-price" id="display-price">$10.00</span>
-            <span class="unit-note">each</span>
-            <span class="discount-pill">Keepsake Card Included</span>
+            <span class="sale-price" id="display-price">Handmade Keepsake</span>
+            <span class="discount-pill">Story Card Included</span>
           </div>
 
           <p class="product-description">
             A meaningful, wearable reminder of faith. Individually hand-strung with vibrant beads, metallic silver spacers, and clean white accent beads. Mounted on an inspirational card explaining the beautiful message behind every single color.
           </p>
 
-          <!-- Bundle Preset Cards (Boosts order values & convenient for families) -->
+          <!-- Quantity Bundles (Focused on Quantity & Gifting, no dollar amounts) -->
           <fieldset class="bundle-fieldset">
-            <legend class="bundle-legend">Choose a Popular Package:</legend>
+            <legend class="bundle-legend">Select How Many You Need:</legend>
             <div class="bundle-grid">
-              <button type="button" class="bundle-card active" data-qty="1" data-price="10.00">
-                <span class="bundle-title">Single Bracelet</span>
-                <span class="bundle-price">$10.00</span>
-                <span class="bundle-sub">1 keepsakes</span>
+              <button type="button" class="bundle-card active" data-qty="1">
+                <span class="bundle-title">1 Bracelet</span>
+                <span class="bundle-sub">Personal Keepsake</span>
               </button>
-              <button type="button" class="bundle-card popular" data-qty="3" data-price="27.00">
+              <button type="button" class="bundle-card popular" data-qty="3">
                 <span class="badge-popular">Most Loved</span>
-                <span class="bundle-title">Gift 3-Pack</span>
-                <span class="bundle-price">$27.00</span>
-                <span class="bundle-sub">Save $3 &bull; Great for kids</span>
+                <span class="bundle-title">3 Bracelets</span>
+                <span class="bundle-sub">Family &amp; Gifting</span>
               </button>
-              <button type="button" class="bundle-card" data-qty="5" data-price="45.00">
-                <span class="bundle-title">Family 5-Pack</span>
-                <span class="bundle-price">$45.00</span>
-                <span class="bundle-sub">Save $5 &bull; For groups</span>
+              <button type="button" class="bundle-card" data-qty="5">
+                <span class="bundle-title">5 Bracelets</span>
+                <span class="bundle-sub">Group / Class Pack</span>
               </button>
             </div>
           </fieldset>
 
-          <!-- Custom Quantity Stepper & Calculation -->
+          <!-- Custom Quantity Stepper -->
           <form id="purchase-options-form" class="purchase-form" onsubmit="return false;">
             <div class="quantity-row">
               <div class="quantity-control-wrapper">
@@ -150,15 +146,15 @@
               </div>
 
               <div class="total-summary">
-                <span class="total-label">Order Total:</span>
-                <span class="total-amount" id="calculated-total">$10.00</span>
+                <span class="total-label">Selected:</span>
+                <span class="total-amount" id="calculated-total">1 Bracelet</span>
               </div>
             </div>
 
             <!-- Primary Action Buttons -->
             <div class="action-buttons-group">
               <button type="button" id="btn-open-order" class="btn btn-primary btn-block">
-                <span>ORDER NOW — <span id="btn-total-label">$10.00</span></span>
+                <span>REQUEST ORDER (<span id="btn-total-label">1 Bracelet</span>)</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
               </button>
 
@@ -173,7 +169,7 @@
               <span class="pay-tag">Cash App</span>
               <span class="pay-tag">Zelle</span>
               <span class="pay-tag">PayPal</span>
-              <span class="pay-tag">Credit Card</span>
+              <span class="pay-tag">Check / Cash</span>
             </div>
 
           </form>
@@ -289,9 +285,9 @@
 
         <div class="faq-accordion-group">
           <details name="faq" open>
-            <summary>How do I pay for my order?</summary>
+            <summary>How does ordering and payment work?</summary>
             <div class="faq-content">
-              <p>You can pay using Venmo, Cash App, Zelle, PayPal, or credit/debit card. Once you place your order, her payment handle details appear immediately on screen so you can complete payment with ease.</p>
+              <p>Simply select your quantity and enter your shipping address below. She will confirm your order and provide payment details (Venmo, Cash App, Zelle, check, or local pickup).</p>
             </div>
           </details>
 
@@ -303,16 +299,16 @@
           </details>
 
           <details name="faq">
-            <summary>How fast will my order be shipped?</summary>
+            <summary>How will my order be shipped?</summary>
             <div class="faq-content">
-              <p>Orders are packaged with care and mailed via USPS within 24 to 48 hours. You will receive an update once your package is on its way.</p>
+              <p>Orders are packaged with care and mailed via USPS with tracking, or available for local pickup if arranged.</p>
             </div>
           </details>
 
           <details name="faq">
-            <summary>Can I order in bulk for a church class or youth group?</summary>
+            <summary>Can I order multiple bracelets for a group or class?</summary>
             <div class="faq-content">
-              <p>Absolutely! Simply select your quantity in the order form, or use the "Quick Order via Text Message" button to arrange a special group order.</p>
+              <p>Absolutely! You can choose 3, 5, or enter any custom count up to 50 in the quantity box, or send a quick text message.</p>
             </div>
           </details>
         </div>
@@ -325,7 +321,7 @@
         <h2>Share the Story of Faith Today</h2>
         <p>Order a handcrafted bracelet for someone you love, complete with keepsake story card.</p>
         <button type="button" class="btn btn-primary btn-large btn-scroll-top">
-          ORDER NOW — $10.00
+          REQUEST AN ORDER
         </button>
       </div>
     </section>
@@ -335,7 +331,7 @@
   <aside class="sticky-mobile-bar" aria-label="Mobile quick order bar">
     <div class="sticky-bar-inner">
       <div class="sticky-bar-info">
-        <span class="sticky-price" id="mobile-sticky-price">$10.00</span>
+        <span class="sticky-price" id="mobile-sticky-price">1 Bracelet</span>
         <span class="sticky-badge">Card Included</span>
       </div>
       <button type="button" id="btn-sticky-order" class="btn btn-primary btn-sticky">
@@ -344,13 +340,13 @@
     </div>
   </aside>
 
-  <!-- Order / Checkout Modal Dialog (Connected to n8n & Google Sheets) -->
+  <!-- Order / Checkout Modal Dialog (Connected to Google Sheets) -->
   <dialog id="checkout-modal" class="modal-dialog">
     <div class="dialog-card">
       <header class="dialog-header">
         <div>
-          <h2>Order Your Bracelet</h2>
-          <p class="dialog-subtitle">Simple, safe order request</p>
+          <h2>Order Request</h2>
+          <p class="dialog-subtitle">Quick &amp; simple order submission</p>
         </div>
         <button type="button" id="btn-close-modal" class="btn-close" aria-label="Close modal">✕</button>
       </header>
@@ -358,8 +354,8 @@
       <!-- Order Review Box -->
       <div class="order-summary-box">
         <div class="summary-line">
-          <span>The Salvation Story Bracelet (<span id="modal-qty">1</span>x)</span>
-          <strong id="modal-total-price">$10.00</strong>
+          <span>The Salvation Story Bracelet</span>
+          <strong id="modal-qty">1 Bracelet</strong>
         </div>
         <div class="summary-line">
           <span>Keepsake Presentation Card</span>
@@ -367,7 +363,7 @@
         </div>
       </div>
 
-      <!-- Customer Details Form (Submitted to n8n Webhook / Google Sheet) -->
+      <!-- Customer Details Form -->
       <form id="customer-order-form" class="modal-form" method="dialog">
         <fieldset class="form-fieldset">
           <legend class="sr-only">Buyer and Shipping Details</legend>
@@ -399,13 +395,13 @@
           </div>
 
           <div class="form-row">
-            <label for="cust-payment-pref">How will you send payment? <span class="required-star">*</span></label>
+            <label for="cust-payment-pref">Preferred Payment Method <span class="required-star">*</span></label>
             <select id="cust-payment-pref" name="payment_method" class="form-select" required>
               <option value="Venmo">Venmo</option>
               <option value="Cash App">Cash App</option>
               <option value="Zelle">Zelle</option>
               <option value="PayPal">PayPal</option>
-              <option value="Credit / Debit Card">Credit / Debit Card</option>
+              <option value="Check / Mail">Check by Mail</option>
               <option value="Cash / Local Pickup">Cash on Local Pickup</option>
             </select>
           </div>
@@ -418,10 +414,10 @@
 
         <div class="modal-actions">
           <button type="submit" id="btn-submit-order" class="btn btn-primary btn-block">
-            <span id="submit-btn-text">COMPLETE ORDER REQUEST</span>
+            <span id="submit-btn-text">SUBMIT ORDER REQUEST</span>
             <span id="submit-btn-spinner" class="spinner hidden" aria-hidden="true"></span>
           </button>
-          <p class="dialog-guarantee">🔒 No upfront card charge required right now &bull; She will confirm with you!</p>
+          <p class="dialog-guarantee">🔒 No payment charged now &bull; She will contact you directly to confirm!</p>
         </div>
       </form>
     </div>
@@ -432,12 +428,12 @@
     <div class="dialog-card text-center">
       <div class="success-icon" aria-hidden="true">✓</div>
       <h2>Order Request Received!</h2>
-      <p id="success-msg">Thank you so much! Your order has been placed into our orders log. She has received your shipping address and will prepare your package.</p>
+      <p id="success-msg">Thank you so much! Your order for <strong id="success-qty-text">1 bracelet</strong> has been saved. She has received your shipping address and will be in touch shortly to confirm!</p>
       
-      <!-- Instant Payment Instructions -->
+      <!-- Payment Details Box -->
       <div class="payment-instructions-box" id="payment-instructions-box">
-        <h3>Send Payment Directly to Mom:</h3>
-        <p>Total for your order: <strong id="confirm-pay-amount" class="text-gold">$10.00</strong></p>
+        <h3>Contact / Payment Info:</h3>
+        <p>You can send payment or reach out to Mom directly via:</p>
         
         <div class="payment-badges-list">
           <div class="pay-option">
@@ -450,7 +446,7 @@
             <strong>Zelle:</strong> <span id="display-zelle">mom@example.com</span>
           </div>
         </div>
-        <p class="pay-hint">Include your name in the payment memo so she can easily match your package!</p>
+        <p class="pay-hint">Include your name in the note so she can easily match your package!</p>
       </div>
 
       <button type="button" id="btn-done" class="btn btn-primary btn-block" style="margin-top: 1rem;">Done</button>
