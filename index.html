@@ -103,7 +103,7 @@
           <h1 id="product-heading" class="product-title">My Salvation Story Bracelet</h1>
           <p class="product-tagline">&ldquo;Each color tells part of God's story for me&rdquo;</p>
 
-          <!-- Status / Inquire Banner (No hardcoded price) -->
+          <!-- Status / Inquire Banner -->
           <div class="price-container">
             <span class="sale-price" id="display-price">Handmade Keepsake</span>
             <span class="discount-pill">Story Card Included</span>
@@ -113,7 +113,7 @@
             A meaningful, wearable reminder of faith. Individually hand-strung with vibrant beads, metallic silver spacers, and clean white accent beads. Mounted on an inspirational card explaining the beautiful message behind every single color.
           </p>
 
-          <!-- Quantity Bundles (Focused on Quantity & Gifting, no dollar amounts) -->
+          <!-- Quantity Bundles -->
           <fieldset class="bundle-fieldset">
             <legend class="bundle-legend">Select How Many You Need:</legend>
             <div class="bundle-grid">
@@ -164,12 +164,15 @@
               </a>
             </div>
 
+            <!-- Payment Methods Supported -->
             <div class="payment-badges-row">
+              <span class="pay-tag pay-tag-featured">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.789.789 0 0 1 .777-.66h6.702c2.868 0 5.034.62 6.096 1.745.97 1.026 1.258 2.502.83 4.269-.73 3.013-2.913 4.795-6.148 4.795H9.68a.89.89 0 0 0-.877.747l-1.077 6.071a.64.64 0 0 1-.65.65z"/></svg>
+                PayPal &bull; Debit / Credit
+              </span>
               <span class="pay-tag">Venmo</span>
-              <span class="pay-tag">Cash App</span>
               <span class="pay-tag">Zelle</span>
-              <span class="pay-tag">PayPal</span>
-              <span class="pay-tag">Check / Cash</span>
+              <span class="pay-tag">Cash App</span>
             </div>
 
           </form>
@@ -285,9 +288,9 @@
 
         <div class="faq-accordion-group">
           <details name="faq" open>
-            <summary>How does ordering and payment work?</summary>
+            <summary>How does paying with PayPal and Debit Card work?</summary>
             <div class="faq-content">
-              <p>Simply select your quantity and enter your shipping address below. She will confirm your order and provide payment details (Venmo, Cash App, Zelle, check, or local pickup).</p>
+              <p>You can pay quickly and safely using PayPal. You do not even need a PayPal account — you can simply use any standard debit card or credit card through PayPal's secure checkout, or your PayPal balance.</p>
             </div>
           </details>
 
@@ -395,12 +398,12 @@
           </div>
 
           <div class="form-row">
-            <label for="cust-payment-pref">Preferred Payment Method <span class="required-star">*</span></label>
+            <label for="cust-payment-pref">Payment Method <span class="required-star">*</span></label>
             <select id="cust-payment-pref" name="payment_method" class="form-select" required>
+              <option value="PayPal / Debit Card" selected>PayPal (Debit Card, Credit Card, or PayPal)</option>
               <option value="Venmo">Venmo</option>
-              <option value="Cash App">Cash App</option>
               <option value="Zelle">Zelle</option>
-              <option value="PayPal">PayPal</option>
+              <option value="Cash App">Cash App</option>
               <option value="Check / Mail">Check by Mail</option>
               <option value="Cash / Local Pickup">Cash on Local Pickup</option>
             </select>
@@ -417,7 +420,7 @@
             <span id="submit-btn-text">SUBMIT ORDER REQUEST</span>
             <span id="submit-btn-spinner" class="spinner hidden" aria-hidden="true"></span>
           </button>
-          <p class="dialog-guarantee">🔒 No payment charged now &bull; She will contact you directly to confirm!</p>
+          <p class="dialog-guarantee">🔒 No payment charged now &bull; Secure confirmation &bull; Anyone can pay via Debit or PayPal</p>
         </div>
       </form>
     </div>
@@ -428,25 +431,32 @@
     <div class="dialog-card text-center">
       <div class="success-icon" aria-hidden="true">✓</div>
       <h2>Order Request Received!</h2>
-      <p id="success-msg">Thank you so much! Your order for <strong id="success-qty-text">1 bracelet</strong> has been saved. She has received your shipping address and will be in touch shortly to confirm!</p>
+      <p id="success-msg">Thank you so much! Your order for <strong id="success-qty-text">1 bracelet</strong> has been saved. She has received your shipping address and will confirm your order details!</p>
       
-      <!-- Payment Details Box -->
+      <!-- Primary PayPal Button & Direct Payment -->
       <div class="payment-instructions-box" id="payment-instructions-box">
-        <h3>Contact / Payment Info:</h3>
-        <p>You can send payment or reach out directly via:</p>
+        <h3>Pay with Debit Card or PayPal:</h3>
+        <p>Anyone can pay using a standard debit card, credit card, or PayPal account:</p>
         
+        <div style="margin-block: 0.85rem;">
+          <a id="btn-paypal-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-paypal btn-block">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.72a.789.789 0 0 1 .777-.66h6.702c2.868 0 5.034.62 6.096 1.745.97 1.026 1.258 2.502.83 4.269-.73 3.013-2.913 4.795-6.148 4.795H9.68a.89.89 0 0 0-.877.747l-1.077 6.071a.64.64 0 0 1-.65.65z"/></svg>
+            <span>Open PayPal to Pay (Debit / Card / PayPal)</span>
+          </a>
+        </div>
+
+        <p class="pay-hint" style="margin-bottom: 0.5rem;">Or you can also send via her other handles:</p>
         <div class="payment-badges-list">
           <div class="pay-option">
-            <strong>Venmo:</strong> <span id="display-venmo">@Mom-Bracelet</span>
+            <strong>PayPal Email:</strong> <span id="display-paypal">mom-paypal@example.com</span>
           </div>
           <div class="pay-option">
-            <strong>Cash App:</strong> <span id="display-cashapp">$MomBracelet</span>
+            <strong>Venmo:</strong> <span id="display-venmo">@Mom-Bracelet</span>
           </div>
           <div class="pay-option">
             <strong>Zelle:</strong> <span id="display-zelle">mom@example.com</span>
           </div>
         </div>
-        <p class="pay-hint">Include your name in the note so she can easily match your package!</p>
       </div>
 
       <button type="button" id="btn-done" class="btn btn-primary btn-block" style="margin-top: 1rem;">Done</button>

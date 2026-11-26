@@ -1228,3 +1228,36 @@ details[open] summary::after {
 .powered-by {
   color: var(--color-gold);
 }
+
+
+/* ==========================================================================
+   PAYPAL BUTTON & FEATURED TAGS
+   ========================================================================== */
+.btn-paypal {
+  background-color: #0070BA;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(0, 112, 186, 0.3);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.95rem 1.5rem;
+}
+
+.btn-paypal:hover {
+  background-color: #005EA6;
+  color: #FFFFFF !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 112, 186, 0.45);
+}
+
+.pay-tag-featured {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #1D4ED8;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}

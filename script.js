@@ -9,10 +9,15 @@ const STORE_CONFIG = {
   // Example: "https://script.google.com/macros/s/AKfycb.../exec"
   webhookUrl: "",
 
+  // PAYPAL SETTINGS:
+  // She can create a free 1-click payment link at paypal.me/HerUsername
+  paypalLink: "https://paypal.me/",
+  paypalEmail: "mom-paypal@example.com",
+
   // Mother-in-law's contact phone number (for SMS quick orders)
   notificationPhone: "555-123-4567",
   
-  // Mother-in-law's payment handles displayed to buyers:
+  // Other optional payment handles:
   venmoHandle: "@Mom-Bracelet",
   cashAppHandle: "$MomBracelet",
   zelleInfo: "mom@example.com or 555-123-4567"
@@ -51,9 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const successQtyText = document.getElementById("success-qty-text");
 
   // Payment Display Elements
+  const displayPaypal = document.getElementById("display-paypal");
+  const btnPaypalLink = document.getElementById("btn-paypal-link");
   const displayVenmo = document.getElementById("display-venmo");
   const displayCashApp = document.getElementById("display-cashapp");
   const displayZelle = document.getElementById("display-zelle");
+
+  if (displayPaypal) displayPaypal.textContent = STORE_CONFIG.paypalEmail;
+  if (btnPaypalLink) {
+    if (STORE_CONFIG.paypalLink && STORE_CONFIG.paypalLink.length > 18) {
+      btnPaypalLink.href = STORE_CONFIG.paypalLink;
+    } else {
+      btnPaypalLink.href = "https://www.paypal.com";
+    }
+  }
 
   if (displayVenmo) displayVenmo.textContent = STORE_CONFIG.venmoHandle;
   if (displayCashApp) displayCashApp.textContent = STORE_CONFIG.cashAppHandle;
@@ -92,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update Quick SMS Order link
     if (btnSmsOrder) {
       const smsBody = encodeURIComponent(
-        `Hi! I'd like to order ${label} of The Salvation Story Bracelet. My name is [Name] and my shipping address is: [Address]. Please let me know the price and where to send payment!`
+        `Hi! I'd like to order ${label} of The Salvation Story Bracelet. My name is [Name] and my shipping address is: [Address]. Please let me know the price and PayPal details to send payment!`
       );
       btnSmsOrder.href = `sms:${STORE_CONFIG.notificationPhone}?body=${smsBody}`;
     }
