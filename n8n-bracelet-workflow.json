@@ -1,0 +1,181 @@
+{
+  "name": "Bracelet Orders - Google Sheets & Daily Summary",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bracelet-orders",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-order-receiver",
+      "name": "Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ],
+      "webhookId": "bracelet-orders"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "fromUrl",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Orders"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Order ID": "={{ $json.body.orderId }}",
+            "Order Date": "={{ $json.body.orderDate }}",
+            "Buyer Name": "={{ $json.body.buyerName }}",
+            "Shipping Address": "={{ $json.body.shippingAddress }}",
+            "Number of Bracelets": "={{ $json.body.numberOfBracelets }}",
+            "Total Paid": "={{ $json.body.totalPaid }}",
+            "Payment Method": "={{ $json.body.paymentMethod }}",
+            "Phone Number": "={{ $json.body.phone }}",
+            "Special Notes": "={{ $json.body.specialNotes }}",
+            "Fulfillment Status": "Pending Shipment"
+          }
+        },
+        "options": {}
+      },
+      "id": "google-sheets-append",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 20 * * *"
+            }
+          ]
+        }
+      },
+      "id": "daily-schedule-trigger",
+      "name": "Daily 8 PM Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "mode": "fromUrl",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Orders"
+        },
+        "options": {}
+      },
+      "id": "read-google-sheet-orders",
+      "name": "Read Orders Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        460,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calculate sales in the last 24 hours\nconst items = $input.all();\nconst now = new Date();\nconst oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);\n\nlet totalBraceletsSold = 0;\nlet totalRevenue = 0;\nlet buyerSummaryList = [];\n\nfor (const item of items) {\n  const row = item.json;\n  const orderDate = new Date(row['Order Date'] || row['timestamp'] || now);\n  \n  // Check if within last 24 hours (or count all today)\n  if (orderDate >= oneDayAgo) {\n    const qty = parseInt(row['Number of Bracelets'] || 1, 10);\n    const paid = parseFloat(String(row['Total Paid'] || '0').replace('$', '')) || 0;\n    \n    totalBraceletsSold += qty;\n    totalRevenue += paid;\n    buyerSummaryList.push(`• ${row['Buyer Name']} - ${qty} bracelet(s) to ${row['Shipping Address']} (${row['Payment Method']})`);\n  }\n}\n\nconst summaryMessage = `🌸 Daily Faith Bracelet Report (${now.toLocaleDateString()})\n\n` +\n  `✨ Bracelets Sold in Last 24 Hours: ${totalBraceletsSold}\n` +\n  `💵 Total Amount: $${totalRevenue.toFixed(2)}\n\n` +\n  (buyerSummaryList.length > 0 \n    ? `📦 Orders to ship:\n${buyerSummaryList.join('\\n')}` \n    : 'No new orders received in the past 24 hours.');\n\nreturn [{\n  json: {\n    totalBraceletsSold,\n    totalRevenue: `$${totalRevenue.toFixed(2)}`,\n    ordersCount: buyerSummaryList.length,\n    summaryMessage\n  }\n}];"
+      },
+      "id": "calculate-24h-sales",
+      "name": "Calculate 24h Sales",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        540
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $env.MOM_EMAIL || 'mom@example.com' }}",
+        "subject": "=Daily Bracelet Sales: {{ $json.totalBraceletsSold }} sold (${{ $json.totalRevenue }})",
+        "message": "={{ $json.summaryMessage }}",
+        "options": {}
+      },
+      "id": "notify-mom-email",
+      "name": "Send Daily Email/Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        940,
+        540
+      ]
+    }
+  ],
+  "connections": {
+    "Order Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily 8 PM Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Orders Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Orders Sheet": {
+      "main": [
+        [
+          {
+            "node": "Calculate 24h Sales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate 24h Sales": {
+      "main": [
+        [
+          {
+            "node": "Send Daily Email/Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {}
+}

@@ -1,0 +1,4 @@
+Order ID,Order Date,Buyer Name,Shipping Address,Number of Bracelets,Total Paid,Payment Method,Phone Number,Special Notes,Fulfillment Status
+ORD-EX001,Nov 26 2026 10:15 AM,Sarah Jenkins,"124 Maple St, Dallas, TX 75001",3,$27.00,Venmo,(555) 234-5678,Write 'For Emma' on card,Pending Shipment
+ORD-EX002,Nov 26 2026 02:40 PM,David Miller,"892 Oak Ridge Dr, Atlanta, GA 30301",1,$10.00,Zelle,(555) 345-6789,None,Pending Shipment
+ORD-EX003,Nov 26 2026 04:10 PM,Grace Roberts,"450 Pine Ave Apt 3B, Nashville, TN 37201",5,$45.00,Cash App,(555) 456-7890,Gift for Sunday School class,Pending Shipment

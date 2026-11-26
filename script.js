@@ -1,53 +1,66 @@
 // =========================================================================
-// EASY CONFIGURATION FOR MOTHER-IN-LAW'S BRACELET STORE
-// Change these settings anytime to match her real prices & payment handles!
+// THE SALVATION BRACELET - STORE & n8n WEBHOOK CONFIGURATION
 // =========================================================================
 const STORE_CONFIG = {
-  itemName: "Handcrafted Faith Story Bracelet",
-  itemPrice: 10.00,             // Price per bracelet
+  itemName: "The Salvation Story Bracelet",
+  itemPrice: 10.00,             // Default price per unit
   currencySymbol: "$",
   
-  // Her phone number for receiving text orders (format: digits only or with dashes)
+  // Package bundle prices
+  bundles: {
+    1: 10.00,
+    3: 27.00,
+    5: 45.00
+  },
+
+  // n8n Webhook URL:
+  // Paste your n8n Production Webhook URL here!
+  // Example: "https://your-n8n-instance.com/webhook/bracelet-orders"
+  n8nWebhookUrl: "",
+
+  // Mother-in-law's contact phone number (for SMS quick orders)
   notificationPhone: "555-123-4567",
   
-  // Her email address for receiving orders
-  notificationEmail: "orders@example.com",
-  
-  // Payment methods: Update these with her actual account handles!
+  // Mother-in-law's payment handles displayed to buyers:
   venmoHandle: "@Mom-Bracelet",
   cashAppHandle: "$MomBracelet",
-  zelleInfo: "mom@example.com or 555-123-4567",
-  paypalLink: "",               // e.g. "https://paypal.me/YourName"
-  stripePaymentLink: ""         // e.g. "https://buy.stripe.com/..."
+  zelleInfo: "mom@example.com or 555-123-4567"
 };
 
 // =========================================================================
-// DOM ELEMENTS & EVENT LISTENERS
+// APPLICATION LOGIC
 // =========================================================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Elements
   const qtyInput = document.getElementById("qty-input");
   const qtyMinus = document.getElementById("qty-minus");
   const qtyPlus = document.getElementById("qty-plus");
   const calculatedTotal = document.getElementById("calculated-total");
-  const displayPrice = document.getElementById("display-price");
+  const btnTotalLabel = document.getElementById("btn-total-label");
   const mobileStickyPrice = document.getElementById("mobile-sticky-price");
-  
-  // Modals
+  const bundleCards = document.querySelectorAll(".bundle-card");
+
+  // Modals & Triggers
   const checkoutModal = document.getElementById("checkout-modal");
   const successModal = document.getElementById("success-modal");
-  const btnOrderModal = document.getElementById("btn-order-modal");
+  const btnOpenOrder = document.getElementById("btn-open-order");
   const btnStickyOrder = document.getElementById("btn-sticky-order");
   const btnCloseModal = document.getElementById("btn-close-modal");
   const btnDone = document.getElementById("btn-done");
+  const scrollButtons = document.querySelectorAll(".btn-scroll-top");
+  
+  // Form elements
   const customerOrderForm = document.getElementById("customer-order-form");
+  const submitBtnText = document.getElementById("submit-btn-text");
+  const submitBtnSpinner = document.getElementById("submit-btn-spinner");
   const btnSmsOrder = document.getElementById("btn-sms-order");
   
   // Modal Summary Elements
   const modalQty = document.getElementById("modal-qty");
   const modalTotalPrice = document.getElementById("modal-total-price");
   const confirmPayAmount = document.getElementById("confirm-pay-amount");
-  
-  // Payment placeholders
+
+  // Payment Display Elements
   const displayVenmo = document.getElementById("display-venmo");
   const displayCashApp = document.getElementById("display-cashapp");
   const displayZelle = document.getElementById("display-zelle");
@@ -56,79 +69,111 @@ document.addEventListener("DOMContentLoaded", () => {
   if (displayCashApp) displayCashApp.textContent = STORE_CONFIG.cashAppHandle;
   if (displayZelle) displayZelle.textContent = STORE_CONFIG.zelleInfo;
 
-  // Initialize Price Display
-  displayPrice.textContent = `${STORE_CONFIG.currencySymbol}${STORE_CONFIG.itemPrice.toFixed(2)}`;
-  
-  // Update Total & Text Message Link
-  function updateTotal() {
+  // Calculate Price with Bundles
+  function calculatePrice(qty) {
+    if (STORE_CONFIG.bundles[qty]) {
+      return STORE_CONFIG.bundles[qty];
+    }
+    // Any other quantity:
+    return qty * STORE_CONFIG.itemPrice;
+  }
+
+  // Update UI totals and active bundle cards
+  function updateOrderDisplay() {
     let qty = parseInt(qtyInput.value, 10);
     if (isNaN(qty) || qty < 1) qty = 1;
-    if (qty > 25) qty = 25;
+    if (qty > 50) qty = 50;
     qtyInput.value = qty;
 
-    const total = qty * STORE_CONFIG.itemPrice;
-    const formattedTotal = `${STORE_CONFIG.currencySymbol}${total.toFixed(2)}`;
-    
-    calculatedTotal.textContent = formattedTotal;
+    const totalPrice = calculatePrice(qty);
+    const formattedTotal = `${STORE_CONFIG.currencySymbol}${totalPrice.toFixed(2)}`;
+
+    if (calculatedTotal) calculatedTotal.textContent = formattedTotal;
+    if (btnTotalLabel) btnTotalLabel.textContent = formattedTotal;
     if (mobileStickyPrice) mobileStickyPrice.textContent = formattedTotal;
     if (modalQty) modalQty.textContent = qty;
     if (modalTotalPrice) modalTotalPrice.textContent = formattedTotal;
     if (confirmPayAmount) confirmPayAmount.textContent = formattedTotal;
 
+    // Highlight matching bundle card if quantity matches
+    bundleCards.forEach((card) => {
+      const cardQty = parseInt(card.getAttribute("data-qty"), 10);
+      if (cardQty === qty) {
+        card.classList.add("active");
+      } else {
+        card.classList.remove("active");
+      }
+    });
+
     // Update Quick SMS Order link
     if (btnSmsOrder) {
       const smsBody = encodeURIComponent(
-        `Hi! I'd like to order ${qty} Handcrafted Faith Bracelet(s) for a total of ${formattedTotal}. My name is: [Name] and my shipping address is: [Address].`
+        `Hi! I'd like to order ${qty} Salvation Story Bracelet(s) for ${formattedTotal}. My name is [Name] and my shipping address is: [Address].`
       );
       btnSmsOrder.href = `sms:${STORE_CONFIG.notificationPhone}?body=${smsBody}`;
     }
   }
 
-  // Stepper handlers
-  qtyMinus.addEventListener("click", () => {
-    let current = parseInt(qtyInput.value, 10) || 1;
-    if (current > 1) {
-      qtyInput.value = current - 1;
-      updateTotal();
-    }
+  // Bundle Card Click
+  bundleCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const selectedQty = parseInt(card.getAttribute("data-qty"), 10);
+      qtyInput.value = selectedQty;
+      updateOrderDisplay();
+    });
   });
 
-  qtyPlus.addEventListener("click", () => {
-    let current = parseInt(qtyInput.value, 10) || 1;
-    if (current < 25) {
-      qtyInput.value = current + 1;
-      updateTotal();
-    }
-  });
+  // Quantity Stepper Controls
+  if (qtyMinus) {
+    qtyMinus.addEventListener("click", () => {
+      let current = parseInt(qtyInput.value, 10) || 1;
+      if (current > 1) {
+        qtyInput.value = current - 1;
+        updateOrderDisplay();
+      }
+    });
+  }
 
-  qtyInput.addEventListener("input", updateTotal);
+  if (qtyPlus) {
+    qtyPlus.addEventListener("click", () => {
+      let current = parseInt(qtyInput.value, 10) || 1;
+      if (current < 50) {
+        qtyInput.value = current + 1;
+        updateOrderDisplay();
+      }
+    });
+  }
 
-  // Open Checkout Modal
-  function openCheckout() {
-    updateTotal();
-    
-    // If Stripe link is provided, redirect directly to Stripe checkout!
-    if (STORE_CONFIG.stripePaymentLink && STORE_CONFIG.stripePaymentLink.startsWith("http")) {
-      window.location.href = STORE_CONFIG.stripePaymentLink;
-      return;
-    }
+  if (qtyInput) {
+    qtyInput.addEventListener("input", updateOrderDisplay);
+  }
 
+  // Modal Open Handler
+  function openCheckoutModal() {
+    updateOrderDisplay();
     if (checkoutModal) {
       checkoutModal.showModal();
     }
   }
 
-  if (btnOrderModal) btnOrderModal.addEventListener("click", openCheckout);
-  if (btnStickyOrder) btnStickyOrder.addEventListener("click", openCheckout);
+  if (btnOpenOrder) btnOpenOrder.addEventListener("click", openCheckoutModal);
+  if (btnStickyOrder) btnStickyOrder.addEventListener("click", openCheckoutModal);
 
-  // Close Checkout Modal
+  // Scroll to purchase on bottom CTA
+  scrollButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  // Close Modal Handler
   if (btnCloseModal && checkoutModal) {
     btnCloseModal.addEventListener("click", () => {
       checkoutModal.close();
     });
   }
 
-  // Close when clicking outside modal backdrop
+  // Backdrop click dismiss for dialogs
   [checkoutModal, successModal].forEach((dialog) => {
     if (dialog) {
       dialog.addEventListener("click", (e) => {
@@ -146,54 +191,81 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle Form Submission
+  // Order Submission Handler (Submits to n8n Webhook & Google Sheets)
   if (customerOrderForm) {
-    customerOrderForm.addEventListener("submit", (e) => {
+    customerOrderForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const formData = new FormData(customerOrderForm);
       const qty = parseInt(qtyInput.value, 10) || 1;
-      const totalFormatted = `${STORE_CONFIG.currencySymbol}${(qty * STORE_CONFIG.itemPrice).toFixed(2)}`;
+      const totalNumber = calculatePrice(qty);
+      const totalFormatted = `${STORE_CONFIG.currencySymbol}${totalNumber.toFixed(2)}`;
 
-      const orderData = {
-        name: formData.get("name"),
-        phone: formData.get("phone"),
-        address: formData.get("address"),
+      const orderPayload = {
+        orderId: "ORD-" + Date.now().toString(36).toUpperCase(),
+        timestamp: new Date().toISOString(),
+        orderDate: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }),
+        buyerName: formData.get("name")?.trim(),
+        phone: formData.get("phone")?.trim(),
+        shippingAddress: `${formData.get("address")?.trim()}, ${formData.get("city")?.trim()}, ${formData.get("zip")?.trim()}`,
+        streetAddress: formData.get("address")?.trim(),
+        city: formData.get("city")?.trim(),
+        zip: formData.get("zip")?.trim(),
+        numberOfBracelets: qty,
+        totalPaid: totalFormatted,
+        totalRaw: totalNumber,
         paymentMethod: formData.get("payment_method"),
-        notes: formData.get("notes") || "None",
-        quantity: qty,
-        total: totalFormatted,
-        date: new Date().toLocaleString()
+        specialNotes: formData.get("notes")?.trim() || "None",
+        fulfillmentStatus: "Pending Shipment"
       };
 
-      // Save order to browser storage so it's never lost
-      const existingOrders = JSON.parse(localStorage.getItem("bracelet_orders") || "[]");
-      existingOrders.push(orderData);
-      localStorage.setItem("bracelet_orders", JSON.stringify(existingOrders));
+      // Show loading indicator
+      if (submitBtnText) submitBtnText.textContent = "Recording Order...";
+      if (submitBtnSpinner) submitBtnSpinner.classList.remove("hidden");
 
-      // Close order modal and open success modal
+      // Post to n8n Webhook if configured
+      if (STORE_CONFIG.n8nWebhookUrl && STORE_CONFIG.n8nWebhookUrl.startsWith("http")) {
+        try {
+          await fetch(STORE_CONFIG.n8nWebhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            mode: "cors",
+            body: JSON.stringify(orderPayload)
+          });
+        } catch (webhookErr) {
+          console.warn("n8n Webhook post failed (possibly offline or no CORS). Order safely preserved locally.", webhookErr);
+        }
+      }
+
+      // Save order to LocalStorage backup
+      try {
+        const savedOrders = JSON.parse(localStorage.getItem("salvation_bracelet_orders") || "[]");
+        savedOrders.push(orderPayload);
+        localStorage.setItem("salvation_bracelet_orders", JSON.stringify(savedOrders));
+      } catch (storageErr) {
+        console.error("Local storage error:", storageErr);
+      }
+
+      // Reset loading state
+      if (submitBtnText) submitBtnText.textContent = "COMPLETE ORDER REQUEST";
+      if (submitBtnSpinner) submitBtnSpinner.classList.add("hidden");
+
+      // Switch to confirmation modal
       checkoutModal.close();
       customerOrderForm.reset();
-      updateTotal();
-      
+      updateOrderDisplay();
+
       if (successModal) {
         successModal.showModal();
       }
-
-      // Also trigger a prefilled email notification to her
-      const mailSubject = encodeURIComponent(`New Bracelet Order from ${orderData.name}`);
-      const mailBody = encodeURIComponent(
-        `You received a new order for ${orderData.quantity} Faith Story Bracelet(s)!\n\n` +
-        `Customer: ${orderData.name}\n` +
-        `Phone: ${orderData.phone}\n` +
-        `Shipping Address: ${orderData.address}\n` +
-        `Payment Method: ${orderData.paymentMethod}\n` +
-        `Total: ${orderData.total}\n` +
-        `Notes: ${orderData.notes}\n\n` +
-        `Order Date: ${orderData.date}`
-      );
-      
-      console.log("Order logged:", orderData);
     });
   }
 
@@ -204,6 +276,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial calculation
-  updateTotal();
+  // Initial display setup
+  updateOrderDisplay();
 });

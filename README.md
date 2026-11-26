@@ -1,36 +1,77 @@
-# Handcrafted Faith Story Bracelet - Landing Page
+# The Salvation Story Bracelet — Landing Page & n8n Automation
 
-A simple, mobile-friendly landing page created to help sell handcrafted faith story bracelets through social media links (Instagram, Facebook, TikTok, text message).
-
-## 🚀 Live Site
-Once GitHub Pages finishes building, your page will be live at:
-**`https://katycat1313.github.io/faith-bracelet/`**
+A responsive, handcrafted landing page designed for selling faith story bracelets through social media links, integrated with **n8n** and **Google Sheets** for automatic order logging and daily sales summaries.
 
 ---
 
-## 💡 How She Takes Orders & Payments Easily
-
-### Option 1: Venmo, Cash App, or Zelle (Easiest for friends/family & social media)
-1. In `script.js`, replace `@Mom-Bracelet` and `$MomBracelet` with her actual Venmo and Cash App usernames, or her phone number for Zelle.
-2. Customers fill in their name and shipping address in the order box on the page, select their payment method, and submit.
-3. They see her Venmo/Cash App/Zelle details on screen right away to complete payment.
-
-### Option 2: 1-Click Text Message Order (Fastest on Mobile)
-When customers browse the link from a phone and tap **"💬 Quick Order via Text Message"**, it automatically opens a text message draft on their phone with their order details addressed directly to her cell phone.
-
-### Option 3: Stripe Payment Link (Best for accepting Credit & Debit Cards automatically)
-If she wants strangers on the internet to be able to pay with a regular credit card without needing Venmo/Cash App:
-1. Create a free account at [Stripe.com](https://stripe.com).
-2. Click **More** &rarr; **Payment Links** &rarr; **New**.
-3. Set the price to `$10.00` (or whatever price she chooses), and check the box **"Collect customers' shipping address"**.
-4. Copy the link (e.g. `https://buy.stripe.com/...`) and paste it into `script.js` under `stripePaymentLink: "..."`.
-5. Now, whenever anyone taps **Order Now**, it goes directly to Stripe's checkout and deposits the funds straight into her bank account!
+## 🌟 Live Site
+- **Live URL:** [https://katycat1313.github.io/faith-bracelet/](https://katycat1313.github.io/faith-bracelet/)
+- **Repository:** [https://github.com/katycat1313/faith-bracelet](https://github.com/katycat1313/faith-bracelet)
 
 ---
 
-## 🛠️ File Structure
-- `index.html`: Clean, accessible semantic webpage.
-- `styles.css`: Mobile-first responsive styling.
-- `script.js`: Price calculation, text order generator, and order handling.
-- `salvation-bracelet.jpg`: The photo of her handcrafted bracelet and card.
-- `.github/workflows/deploy.yml`: Automatic deployment to GitHub Pages.
+## 📊 Google Sheets Setup (Takes 2 Minutes)
+
+We provided a template file in this folder: `orders-template.csv`.
+
+1. Go to [Google Sheets](https://sheets.new) and create a new blank spreadsheet.
+2. Name it **"Faith Bracelet Orders"**.
+3. Name the first tab **"Orders"**.
+4. Set up the columns in row 1 (or click **File > Import > Upload** and select `orders-template.csv`):
+   - **Column A:** `Order ID`
+   - **Column B:** `Order Date`
+   - **Column C:** `Buyer Name`
+   - **Column D:** `Shipping Address`
+   - **Column E:** `Number of Bracelets`
+   - **Column F:** `Total Paid`
+   - **Column G:** `Payment Method`
+   - **Column H:** `Phone Number`
+   - **Column I:** `Special Notes`
+   - **Column J:** `Fulfillment Status`
+
+---
+
+## ⚡ n8n Automation Setup
+
+We included a ready-to-import workflow: `n8n-bracelet-workflow.json`.
+
+### Step 1: Import the Workflow into n8n
+1. In your n8n workspace, click **Workflows** &rarr; **Add Workflow**.
+2. Click the three dots in the top right &rarr; **Import from File...** and select `n8n-bracelet-workflow.json` (or copy/paste the JSON).
+
+### Step 2: Connect the Webhook to the Landing Page
+1. Double-click the **Order Webhook** node in n8n.
+2. Copy the **Production Webhook URL** (e.g. `https://your-n8n.com/webhook/bracelet-orders`).
+3. Open `script.js` on line 18 and paste it into:
+   ```javascript
+   n8nWebhookUrl: "https://your-n8n.com/webhook/bracelet-orders",
+   ```
+4. Commit and push the change to GitHub:
+   ```bash
+   git add script.js
+   git commit -m "Add n8n webhook"
+   git push
+   ```
+
+### Step 3: Connect Google Sheets in n8n
+1. Double-click the **Save to Google Sheets** node.
+2. Connect your Google account and select your **"Faith Bracelet Orders"** spreadsheet.
+3. Do the same for the **Read Orders Sheet** node.
+
+### Step 4: Daily 24-Hour Notification
+The workflow includes a **Daily Schedule Trigger** (runs at 8:00 PM every evening):
+1. It queries the orders placed in the last 24 hours.
+2. It calculates the **total bracelets sold** and **total revenue**.
+3. It sends her an email or notification summarizing:
+   - Total bracelets sold in 24 hours
+   - Total dollar amount
+   - List of buyer names & shipping addresses to pack!
+
+---
+
+## 🎨 Customizing Details in `script.js`
+Open `script.js` to change:
+- `notificationPhone`: Her cell phone for 1-click text orders.
+- `venmoHandle`: Her Venmo username.
+- `cashAppHandle`: Her Cash App tag.
+- `zelleInfo`: Her Zelle phone or email.
