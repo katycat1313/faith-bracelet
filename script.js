@@ -1,5 +1,5 @@
 // =========================================================================
-// THE SALVATION BRACELET - STORE & n8n WEBHOOK CONFIGURATION
+// THE SALVATION BRACELET - STORE & NOTIFICATION CONFIGURATION
 // =========================================================================
 const STORE_CONFIG = {
   itemName: "The Salvation Story Bracelet",
@@ -13,10 +13,10 @@ const STORE_CONFIG = {
     5: 45.00
   },
 
-  // n8n Webhook URL:
-  // Paste your n8n Production Webhook URL here!
-  // Example: "https://your-n8n-instance.com/webhook/bracelet-orders"
-  n8nWebhookUrl: "",
+  // WEBHOOK OR GOOGLE APPS SCRIPT URL:
+  // Paste your Google Apps Script Web App URL (recommended!) OR Zapier Webhook URL here:
+  // Example: "https://script.google.com/macros/s/AKfycb.../exec"
+  webhookUrl: "",
 
   // Mother-in-law's contact phone number (for SMS quick orders)
   notificationPhone: "555-123-4567",
@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (STORE_CONFIG.bundles[qty]) {
       return STORE_CONFIG.bundles[qty];
     }
-    // Any other quantity:
     return qty * STORE_CONFIG.itemPrice;
   }
 
@@ -191,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Order Submission Handler (Submits to n8n Webhook & Google Sheets)
+  // Order Submission Handler
   if (customerOrderForm) {
     customerOrderForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -229,19 +228,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (submitBtnText) submitBtnText.textContent = "Recording Order...";
       if (submitBtnSpinner) submitBtnSpinner.classList.remove("hidden");
 
-      // Post to n8n Webhook if configured
-      if (STORE_CONFIG.n8nWebhookUrl && STORE_CONFIG.n8nWebhookUrl.startsWith("http")) {
+      // Post to Google Apps Script or Zapier / n8n Webhook
+      if (STORE_CONFIG.webhookUrl && STORE_CONFIG.webhookUrl.startsWith("http")) {
         try {
-          await fetch(STORE_CONFIG.n8nWebhookUrl, {
+          const isGoogleScript = STORE_CONFIG.webhookUrl.includes("script.google.com");
+          
+          await fetch(STORE_CONFIG.webhookUrl, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            mode: "cors",
+            headers: isGoogleScript ? { "Content-Type": "text/plain;charset=utf-8" } : { "Content-Type": "application/json" },
+            mode: isGoogleScript ? "no-cors" : "cors",
             body: JSON.stringify(orderPayload)
           });
         } catch (webhookErr) {
-          console.warn("n8n Webhook post failed (possibly offline or no CORS). Order safely preserved locally.", webhookErr);
+          console.warn("Webhook post issue (order safely preserved locally):", webhookErr);
         }
       }
 
