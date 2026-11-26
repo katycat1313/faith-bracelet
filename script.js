@@ -1,25 +1,26 @@
 // =========================================================================
 // THE SALVATION BRACELET - STORE CONFIGURATION
+// Two clean options: $5 for 1, or $12 for 3
 // =========================================================================
 const STORE_CONFIG = {
   itemName: "The Salvation Story Bracelet",
-  itemPrice: 5.00,              // $5 a piece
-  threePackPrice: 12.00,        // 3-pack for $12
-  currencySymbol: "$",
+  
+  // The two prices:
+  priceSingle: 5.00,
+  priceThreePack: 12.00,
 
-  // WEBHOOK OR GOOGLE APPS SCRIPT URL:
-  // Paste your Google Apps Script Web App URL or Zapier Webhook URL here:
-  // Example: "https://script.google.com/macros/s/AKfycb.../exec"
+  // Google Apps Script or Webhook URL:
+  // Paste your Google Apps Script Web App URL here!
   webhookUrl: "",
 
-  // PAYPAL SETTINGS:
+  // PayPal Settings:
   paypalLink: "https://paypal.me/",
   paypalEmail: "mom-paypal@example.com",
 
   // Mother-in-law's contact phone number (for SMS quick orders)
   notificationPhone: "555-123-4567",
   
-  // Other optional payment handles:
+  // Other payment handles:
   venmoHandle: "@Mom-Bracelet",
   cashAppHandle: "$MomBracelet",
   zelleInfo: "mom@example.com or 555-123-4567"
@@ -31,9 +32,6 @@ const STORE_CONFIG = {
 document.addEventListener("DOMContentLoaded", () => {
   // Elements
   const qtyInput = document.getElementById("qty-input");
-  const qtyMinus = document.getElementById("qty-minus");
-  const qtyPlus = document.getElementById("qty-plus");
-  const calculatedTotal = document.getElementById("calculated-total");
   const btnTotalLabel = document.getElementById("btn-total-label");
   const mobileStickyPrice = document.getElementById("mobile-sticky-price");
   const bundleCards = document.querySelectorAll(".bundle-card");
@@ -54,9 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnSmsOrder = document.getElementById("btn-sms-order");
   
   // Modal Summary Elements
-  const modalQty = document.getElementById("modal-qty");
+  const modalItemName = document.getElementById("modal-item-name");
   const modalTotalPrice = document.getElementById("modal-total-price");
   const confirmPayAmount = document.getElementById("confirm-pay-amount");
+  const successMsg = document.getElementById("success-msg");
 
   // Payment Display Elements
   const displayPaypal = document.getElementById("display-paypal");
@@ -78,35 +77,25 @@ document.addEventListener("DOMContentLoaded", () => {
   if (displayCashApp) displayCashApp.textContent = STORE_CONFIG.cashAppHandle;
   if (displayZelle) displayZelle.textContent = STORE_CONFIG.zelleInfo;
 
-  // Pricing: $5 a piece or 3 for $12 (groups of 3 are $12, rest $5 each)
-  function calculatePrice(qty) {
-    if (qty === 1) return STORE_CONFIG.itemPrice;
-    if (qty === 2) return STORE_CONFIG.itemPrice * 2;
-    if (qty === 3) return STORE_CONFIG.threePackPrice;
+  // Selection Handler: Strictly 1 ($5) or 3 ($12)
+  function selectOption(qty) {
+    qty = (qty === 3) ? 3 : 1;
+    if (qtyInput) qtyInput.value = qty;
 
-    const threePacks = Math.floor(qty / 3);
-    const singles = qty % 3;
-    return (threePacks * STORE_CONFIG.threePackPrice) + (singles * STORE_CONFIG.itemPrice);
-  }
+    const priceText = (qty === 3) ? "$12" : "$5";
+    const itemLabel = (qty === 3) ? "3-Pack ($12)" : "1 Bracelet ($5)";
 
-  // Update UI totals and active bundle cards
-  function updateOrderDisplay() {
-    let qty = parseInt(qtyInput.value, 10);
-    if (isNaN(qty) || qty < 1) qty = 1;
-    if (qty > 50) qty = 50;
-    qtyInput.value = qty;
+    if (btnTotalLabel) btnTotalLabel.textContent = priceText;
+    if (mobileStickyPrice) mobileStickyPrice.textContent = priceText;
+    if (modalItemName) modalItemName.textContent = `The Salvation Story Bracelet (${itemLabel})`;
+    if (modalTotalPrice) modalTotalPrice.textContent = priceText;
+    if (confirmPayAmount) confirmPayAmount.textContent = priceText;
 
-    const price = calculatePrice(qty);
-    const formattedTotal = `${STORE_CONFIG.currencySymbol}${price.toFixed(2)}`;
+    if (successMsg) {
+      successMsg.textContent = `Thank you so much! Your order for ${itemLabel} has been saved. She has received your shipping address and will prepare your package!`;
+    }
 
-    if (calculatedTotal) calculatedTotal.textContent = formattedTotal;
-    if (btnTotalLabel) btnTotalLabel.textContent = formattedTotal;
-    if (mobileStickyPrice) mobileStickyPrice.textContent = formattedTotal;
-    if (modalQty) modalQty.textContent = qty;
-    if (modalTotalPrice) modalTotalPrice.textContent = formattedTotal;
-    if (confirmPayAmount) confirmPayAmount.textContent = formattedTotal;
-
-    // Highlight matching bundle card if quantity matches
+    // Toggle active state on the two buttons
     bundleCards.forEach((card) => {
       const cardQty = parseInt(card.getAttribute("data-qty"), 10);
       if (cardQty === qty) {
@@ -118,10 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update Quick SMS Order link
     if (btnSmsOrder) {
-      const itemDescription = qty === 3 ? "a Gift 3-Pack" : (qty === 1 ? "1 bracelet" : `${qty} bracelets`);
-      const smsBody = encodeURIComponent(
-        `Hi! I'd like to order ${itemDescription} of The Salvation Story Bracelet for ${formattedTotal}. My name is [Name] and my shipping address is: [Address].`
-      );
+      const smsBody = (qty === 3)
+        ? encodeURIComponent("Hi! I'd like to order a 3-Pack of The Salvation Story Bracelet for $12. My name is [Name] and my shipping address is: [Address].")
+        : encodeURIComponent("Hi! I'd like to order 1 Salvation Story Bracelet for $5. My name is [Name] and my shipping address is: [Address].");
       btnSmsOrder.href = `sms:${STORE_CONFIG.notificationPhone}?body=${smsBody}`;
     }
   }
@@ -130,39 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
   bundleCards.forEach((card) => {
     card.addEventListener("click", () => {
       const selectedQty = parseInt(card.getAttribute("data-qty"), 10);
-      qtyInput.value = selectedQty;
-      updateOrderDisplay();
+      selectOption(selectedQty);
     });
   });
 
-  // Quantity Stepper Controls
-  if (qtyMinus) {
-    qtyMinus.addEventListener("click", () => {
-      let current = parseInt(qtyInput.value, 10) || 1;
-      if (current > 1) {
-        qtyInput.value = current - 1;
-        updateOrderDisplay();
-      }
-    });
-  }
-
-  if (qtyPlus) {
-    qtyPlus.addEventListener("click", () => {
-      let current = parseInt(qtyInput.value, 10) || 1;
-      if (current < 50) {
-        qtyInput.value = current + 1;
-        updateOrderDisplay();
-      }
-    });
-  }
-
-  if (qtyInput) {
-    qtyInput.addEventListener("input", updateOrderDisplay);
-  }
-
   // Modal Open Handler
   function openCheckoutModal() {
-    updateOrderDisplay();
+    const currentQty = parseInt(qtyInput ? qtyInput.value : "1", 10);
+    selectOption(currentQty);
     if (checkoutModal) {
       checkoutModal.showModal();
     }
@@ -209,9 +172,9 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
 
       const formData = new FormData(customerOrderForm);
-      const qty = parseInt(qtyInput.value, 10) || 1;
-      const totalNumber = calculatePrice(qty);
-      const totalFormatted = `${STORE_CONFIG.currencySymbol}${totalNumber.toFixed(2)}`;
+      const qty = parseInt(qtyInput ? qtyInput.value : "1", 10) === 3 ? 3 : 1;
+      const totalFormatted = (qty === 3) ? "$12.00" : "$5.00";
+      const totalRaw = (qty === 3) ? 12.00 : 5.00;
 
       const orderPayload = {
         orderId: "ORD-" + Date.now().toString(36).toUpperCase(),
@@ -230,8 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
         city: formData.get("city")?.trim(),
         zip: formData.get("zip")?.trim(),
         numberOfBracelets: qty,
+        pricingOption: (qty === 3) ? "3-Pack ($12)" : "1 Bracelet ($5)",
         totalPaid: totalFormatted,
-        totalRaw: totalNumber,
+        totalRaw: totalRaw,
         paymentMethod: formData.get("payment_method"),
         specialNotes: formData.get("notes")?.trim() || "None",
         fulfillmentStatus: "Pending Shipment"
@@ -273,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Switch to confirmation modal
       checkoutModal.close();
       customerOrderForm.reset();
-      updateOrderDisplay();
+      selectOption(1); // Reset to default 1
 
       if (successModal) {
         successModal.showModal();
@@ -288,6 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Initial display setup
-  updateOrderDisplay();
+  // Initial selection (1 for $5)
+  selectOption(1);
 });

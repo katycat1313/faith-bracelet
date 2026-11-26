@@ -4,7 +4,8 @@
 
 :root {
   --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Cormorant Garamond', Georgia, serif;
+  --font-cormorant: 'Cormorant Garamond', Georgia, serif;
   
   /* Warm Earthy Artisan Palette */
   --color-bg: #FAF7F2;
@@ -54,10 +55,11 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-cormorant);
+  font-size: 1.15rem;
   background-color: var(--color-bg);
   color: var(--color-text-main);
-  line-height: 1.6;
+  line-height: 1.65;
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
@@ -437,7 +439,7 @@ button, input, select {
   background-color: #FFFFFF;
   border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 0.85rem 0.5rem;
+  padding: 1.15rem 1rem;
   text-align: center;
   cursor: pointer;
   display: flex;
@@ -458,19 +460,22 @@ button, input, select {
 }
 
 .bundle-title {
-  font-size: 0.85rem;
+  font-family: var(--font-cormorant);
+  font-size: 1.15rem;
   font-weight: 700;
   color: var(--color-text-main);
 }
 
 .bundle-price {
-  font-size: 1.15rem;
+  font-family: var(--font-cormorant);
+  font-size: 1.45rem;
   font-weight: 700;
   color: var(--color-gold-deep);
 }
 
 .bundle-sub {
-  font-size: 0.7rem;
+  font-family: var(--font-cormorant);
+  font-size: 0.95rem;
   color: var(--color-text-muted);
 }
 
@@ -514,8 +519,9 @@ button, input, select {
 }
 
 .option-label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-family: var(--font-cormorant);
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--color-text-main);
 }
 
@@ -571,23 +577,36 @@ button, input, select {
   display: block;
 }
 
+.order-selection-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  background: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  margin-top: 0.25rem;
+}
+
 .total-amount {
-  font-size: 1.35rem;
+  font-family: var(--font-cormorant);
+  font-size: 1.45rem;
   font-weight: 700;
   color: var(--color-text-main);
 }
 
 /* Action Buttons */
 .btn {
+  font-family: var(--font-cormorant);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 1rem 1.75rem;
+  padding: 0.95rem 1.85rem;
   border-radius: var(--radius-full);
   font-weight: 700;
-  letter-spacing: 0.04em;
-  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  font-size: 1.15rem;
   cursor: pointer;
   border: none;
   transition: all 0.25s ease;

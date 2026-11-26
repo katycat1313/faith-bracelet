@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Handcrafted Faith Story Bracelet | The Salvation Bracelet</title>
-  <meta name="description" content="Each color tells part of God's story. Handcrafted beaded faith bracelet mounted on an inspirational keepsake story card. $5 each or 3-pack for $12.">
+  <meta name="description" content="Each color tells part of God's story. Handcrafted beaded faith bracelet mounted on an inspirational keepsake story card. $5 for 1 or 3 for $12.">
   
   <!-- Open Graph Meta Tags for Facebook / Instagram / Twitter Sharing -->
   <meta property="og:type" content="product">
-  <meta property="og:title" content="Handcrafted Faith Story Bracelet - $5 each or 3 for $12">
+  <meta property="og:title" content="Handcrafted Faith Story Bracelet - $5 for 1 or 3 for $12">
   <meta property="og:description" content="Each color tells a meaningful part of the story. Handcrafted with love and mounted on a keepsake story card.">
   <meta property="og:image" content="https://katycat1313.github.io/faith-bracelet/salvation-bracelet.jpg">
   
-  <!-- Google Fonts Preconnect -->
+  <!-- Cormorant Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,7 +25,7 @@
   <aside class="announcement-bar" aria-label="Order Announcement">
     <div class="announcement-content">
       <span class="pulse-dot" aria-hidden="true"></span>
-      <p>Handmade with love &bull; $5 a piece or 3-Pack for $12 &bull; Presentation story card included</p>
+      <p>Handmade with love &bull; $5 for 1 or 3 for $12 &bull; Presentation story card included</p>
     </div>
   </aside>
 
@@ -106,48 +106,37 @@
           <!-- Price Display -->
           <div class="price-container">
             <span class="sale-price" id="display-price">$5.00</span>
-            <span class="unit-note">a piece</span>
-            <span class="discount-pill">3-Pack for $12</span>
+            <span class="unit-note">for 1 &bull; 3 for $12</span>
+            <span class="discount-pill">Story Card Included</span>
           </div>
 
           <p class="product-description">
             A meaningful, wearable reminder of faith. Individually hand-strung with vibrant beads, metallic silver spacers, and clean white accent beads. Mounted on an inspirational card explaining the beautiful message behind every single color.
           </p>
 
-          <!-- Packages: Only Single ($5) and 3-Pack ($12), No 5-Packs! -->
-          <fieldset class="bundle-fieldset">
-            <legend class="bundle-legend">Choose an Option:</legend>
-            <div class="bundle-grid">
-              <button type="button" class="bundle-card active" data-qty="1">
-                <span class="bundle-title">Single Bracelet</span>
-                <span class="bundle-price">$5.00</span>
-                <span class="bundle-sub">1 Keepsake</span>
-              </button>
-              <button type="button" class="bundle-card popular" data-qty="3">
-                <span class="badge-popular">Save $3</span>
-                <span class="bundle-title">Gift 3-Pack</span>
-                <span class="bundle-price">$12.00</span>
-                <span class="bundle-sub">Most Loved &bull; $4 each</span>
-              </button>
-            </div>
-          </fieldset>
-
-          <!-- Custom Quantity Stepper -->
+          <!-- The Two Options: Exactly $5 for 1, or $12 for 3 -->
           <form id="purchase-options-form" class="purchase-form" onsubmit="return false;">
-            <div class="quantity-row">
-              <div class="quantity-control-wrapper">
-                <label for="qty-input" class="option-label">Or Custom Quantity:</label>
-                <div class="qty-stepper">
-                  <button type="button" id="qty-minus" class="qty-btn" aria-label="Decrease quantity">−</button>
-                  <input type="number" id="qty-input" name="quantity" value="1" min="1" max="50" aria-label="Number of bracelets">
-                  <button type="button" id="qty-plus" class="qty-btn" aria-label="Increase quantity">+</button>
-                </div>
+            <fieldset class="bundle-fieldset">
+              <legend class="bundle-legend">Select Your Option:</legend>
+              <div class="bundle-grid">
+                <button type="button" class="bundle-card active" data-qty="1" data-price="5.00" aria-label="Select 1 bracelet for $5.00">
+                  <span class="bundle-title">1 Bracelet</span>
+                  <span class="bundle-price">$5</span>
+                  <span class="bundle-sub">Single Keepsake</span>
+                </button>
+                <button type="button" class="bundle-card popular" data-qty="3" data-price="12.00" aria-label="Select 3 bracelets for $12.00">
+                  <span class="badge-popular">Save $3</span>
+                  <span class="bundle-title">3-Pack</span>
+                  <span class="bundle-price">$12</span>
+                  <span class="bundle-sub">3 Keepsakes &bull; $4 ea</span>
+                </button>
               </div>
+              <input type="hidden" id="qty-input" name="quantity" value="1">
+            </fieldset>
 
-              <div class="total-summary">
-                <span class="total-label">Total:</span>
-                <span class="total-amount" id="calculated-total">$5.00</span>
-              </div>
+            <div class="order-selection-summary">
+              <span class="total-label">Selected:</span>
+              <span class="total-amount" id="calculated-total">1 Bracelet — $5.00</span>
             </div>
 
             <!-- Primary Action Buttons -->
@@ -289,7 +278,7 @@
           <details name="faq" open>
             <summary>How much are the bracelets?</summary>
             <div class="faq-content">
-              <p>Bracelets are $5 each, or you can get a 3-Pack for $12 (saving $3). Each bracelet comes individually mounted on its own keepsake card with a name line.</p>
+              <p>Bracelets are $5 for 1, or you can get a 3-Pack for $12 (saving $3). Each bracelet comes individually mounted on its own presentation keepsake card with a name line.</p>
             </div>
           </details>
 
@@ -348,7 +337,7 @@
       <header class="dialog-header">
         <div>
           <h2>Order Your Bracelet</h2>
-          <p class="dialog-subtitle">Quick &amp; simple order submission</p>
+          <p class="dialog-subtitle">Simple, secure order request</p>
         </div>
         <button type="button" id="btn-close-modal" class="btn-close" aria-label="Close modal">✕</button>
       </header>
@@ -356,11 +345,11 @@
       <!-- Order Review Box -->
       <div class="order-summary-box">
         <div class="summary-line">
-          <span>The Salvation Story Bracelet (<span id="modal-qty">1</span>x)</span>
+          <span id="modal-item-name">The Salvation Story Bracelet (1 Bracelet)</span>
           <strong id="modal-total-price">$5.00</strong>
         </div>
         <div class="summary-line">
-          <span>Keepsake Presentation Card</span>
+          <span>Keepsake Presentation Card(s)</span>
           <span class="free-text">INCLUDED</span>
         </div>
       </div>
