@@ -1,6 +1,6 @@
-# The Salvation Story Bracelet — Landing Page & n8n Automation
+# The Salvation Story Bracelet — Landing Page & Google Sheets Automation
 
-A responsive, handcrafted landing page designed for selling faith story bracelets through social media links, integrated with **n8n** and **Google Sheets** for automatic order logging and daily sales summaries.
+A beautiful, responsive landing page designed for selling handcrafted faith story bracelets through social media links.
 
 ---
 
@@ -10,68 +10,50 @@ A responsive, handcrafted landing page designed for selling faith story bracelet
 
 ---
 
-## 📊 Google Sheets Setup (Takes 2 Minutes)
+## 💡 The Easiest Way: Google Sheets + Daily Note (No Zapier Needed!)
 
-We provided a template file in this folder: `orders-template.csv`.
+Google Sheets can receive orders **and** send her the daily 24-hour summary email automatically for 100% free!
 
-1. Go to [Google Sheets](https://sheets.new) and create a new blank spreadsheet.
-2. Name it **"Faith Bracelet Orders"**.
-3. Name the first tab **"Orders"**.
-4. Set up the columns in row 1 (or click **File > Import > Upload** and select `orders-template.csv`):
-   - **Column A:** `Order ID`
-   - **Column B:** `Order Date`
-   - **Column C:** `Buyer Name`
-   - **Column D:** `Shipping Address`
-   - **Column E:** `Number of Bracelets`
-   - **Column F:** `Total Paid`
-   - **Column G:** `Payment Method`
-   - **Column H:** `Phone Number`
-   - **Column I:** `Special Notes`
-   - **Column J:** `Fulfillment Status`
+### Step 1: Create your Google Sheet
+1. Open [Google Sheets](https://sheets.new) and name it **"Faith Bracelet Orders"**.
+2. Name the first tab **"Orders"**.
+3. In Row 1, put these columns (or import `orders-template.csv`):
+   `Order ID | Order Date | Buyer Name | Shipping Address | Number of Bracelets | Total Paid | Payment Method | Phone Number | Special Notes | Fulfillment Status`
 
----
+### Step 2: Paste the Script (Takes 60 Seconds)
+1. In your Google Sheet, click **Extensions > Apps Script**.
+2. Delete any code in the editor, and paste the entire contents of [google-apps-script.js](file:///C:/Users/katyc/.gemini/antigravity/scratch/bracelet-landing-page/google-apps-script.js).
+3. On line 67, change `mom@example.com` to her actual email address.
+4. Click **Deploy > New Deployment**.
+   - Select type: **Web app**
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+5. Click **Deploy** and copy your **Web App URL** (looks like `https://script.google.com/macros/s/AKfycb.../exec`).
 
-## ⚡ n8n Automation Setup
-
-We included a ready-to-import workflow: `n8n-bracelet-workflow.json`.
-
-### Step 1: Import the Workflow into n8n
-1. In your n8n workspace, click **Workflows** &rarr; **Add Workflow**.
-2. Click the three dots in the top right &rarr; **Import from File...** and select `n8n-bracelet-workflow.json` (or copy/paste the JSON).
-
-### Step 2: Connect the Webhook to the Landing Page
-1. Double-click the **Order Webhook** node in n8n.
-2. Copy the **Production Webhook URL** (e.g. `https://your-n8n.com/webhook/bracelet-orders`).
-3. Open `script.js` on line 18 and paste it into:
+### Step 3: Connect to the Landing Page
+1. Open `script.js` and paste your URL on line 18:
    ```javascript
-   n8nWebhookUrl: "https://your-n8n.com/webhook/bracelet-orders",
+   webhookUrl: "https://script.google.com/macros/s/AKfycb.../exec",
    ```
-4. Commit and push the change to GitHub:
-   ```bash
-   git add script.js
-   git commit -m "Add n8n webhook"
-   git push
-   ```
+2. Commit and push (`git add .`, `git commit -m "add sheet webhook"`, `git push`).
+3. Now, whenever anyone places an order on the site, it instantly writes a new row to Google Sheets!
 
-### Step 3: Connect Google Sheets in n8n
-1. Double-click the **Save to Google Sheets** node.
-2. Connect your Google account and select your **"Faith Bracelet Orders"** spreadsheet.
-3. Do the same for the **Read Orders Sheet** node.
-
-### Step 4: Daily 24-Hour Notification
-The workflow includes a **Daily Schedule Trigger** (runs at 8:00 PM every evening):
-1. It queries the orders placed in the last 24 hours.
-2. It calculates the **total bracelets sold** and **total revenue**.
-3. It sends her an email or notification summarizing:
-   - Total bracelets sold in 24 hours
-   - Total dollar amount
-   - List of buyer names & shipping addresses to pack!
+### Step 4: Set the Daily 24-Hour Timer (Automatic Note to Her)
+1. Back in Google Apps Script, click the **Triggers (clock icon ⏰)** on the left sidebar.
+2. Click **Add Trigger** (bottom right):
+   - Choose which function to run: `sendDailySummary`
+   - Select event source: **Time-driven**
+   - Select type of time based trigger: **Day timer**
+   - Select time of day: **8pm to 9pm** (or your preferred hour)
+3. Click **Save**.
+4. That's it! Every evening, Google Sheets will automatically calculate how many bracelets were sold in the prior 24 hours and email her a complete summary with the buyers' names and shipping addresses!
 
 ---
 
-## 🎨 Customizing Details in `script.js`
-Open `script.js` to change:
-- `notificationPhone`: Her cell phone for 1-click text orders.
-- `venmoHandle`: Her Venmo username.
-- `cashAppHandle`: Her Cash App tag.
-- `zelleInfo`: Her Zelle phone or email.
+## ⚡ Alternative: Using Zapier
+
+If you prefer using Zapier:
+1. Create a Zap with trigger: **Webhooks by Zapier &rarr; Catch Hook**.
+2. Paste the Zapier Webhook URL into `script.js` under `webhookUrl`.
+3. In Zapier, add action: **Google Sheets &rarr; Create Spreadsheet Row**.
+4. In Zapier, add a second Zap with trigger: **Schedule by Zapier &rarr; Every Day** &rarr; action: **Email by Zapier &rarr; Send Outbound Email**.
