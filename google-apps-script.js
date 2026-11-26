@@ -31,8 +31,8 @@ function doPost(e) {
       data.buyerName || "Anonymous",
       data.shippingAddress || "No address provided",
       Number(data.numberOfBracelets || 1),
-      data.totalPaid || "Price TBD",
-      data.paymentMethod || "Venmo",
+      data.totalPaid || "$5.00",
+      data.paymentMethod || "PayPal",
       data.phone || "",
       data.specialNotes || "None",
       "Pending Shipment"
@@ -59,6 +59,7 @@ function sendDailySummary() {
   var oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000));
   
   var totalBracelets = 0;
+  var totalRevenue = 0;
   var orderLines = [];
   
   // Loop through all orders (skip row 0 which is headers)
@@ -69,18 +70,23 @@ function sendDailySummary() {
     // If the order date is within the last 24 hours
     if (isNaN(orderDate.getTime()) || orderDate >= oneDayAgo) {
       var qty = Number(row[4]) || 1;
+      var revStr = String(row[5]).replace(/[^0-9.]/g, '');
+      var revenue = parseFloat(revStr) || 0;
+      
       totalBracelets += qty;
-      orderLines.push("• " + row[2] + " - " + qty + " bracelet(s) to " + row[3] + " [" + row[6] + "]");
+      totalRevenue += revenue;
+      orderLines.push("• " + row[2] + " - " + qty + " bracelet(s) [$" + revenue.toFixed(2) + "] to " + row[3] + " (" + row[6] + ")");
     }
   }
   
   // REPLACE WITH HER REAL EMAIL ADDRESS:
   var recipientEmail = "mom@example.com";
   
-  var subject = "🌸 Daily Bracelet Orders: " + totalBracelets + " bracelet(s) ordered in last 24 hours";
+  var subject = "🌸 Daily Bracelet Orders: " + totalBracelets + " sold in last 24 hours ($" + totalRevenue.toFixed(2) + ")";
   var body = "Good evening!\n\n" +
              "Here is your 24-hour summary for The Salvation Bracelet:\n\n" +
-             "✨ Bracelets Ordered in the Last 24 Hours: " + totalBracelets + "\n\n" +
+             "✨ Bracelets Sold in the Last 24 Hours: " + totalBracelets + "\n" +
+             "💵 Total Amount: $" + totalRevenue.toFixed(2) + "\n\n" +
              (orderLines.length > 0 
                ? "📦 Orders to ship:\n" + orderLines.join("\n") 
                : "No new orders received in the past 24 hours.") +

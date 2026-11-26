@@ -3,6 +3,9 @@
 // =========================================================================
 const STORE_CONFIG = {
   itemName: "The Salvation Story Bracelet",
+  itemPrice: 5.00,              // $5 a piece
+  threePackPrice: 12.00,        // 3-pack for $12
+  currencySymbol: "$",
 
   // WEBHOOK OR GOOGLE APPS SCRIPT URL:
   // Paste your Google Apps Script Web App URL or Zapier Webhook URL here:
@@ -10,7 +13,6 @@ const STORE_CONFIG = {
   webhookUrl: "",
 
   // PAYPAL SETTINGS:
-  // She can create a free 1-click payment link at paypal.me/HerUsername
   paypalLink: "https://paypal.me/",
   paypalEmail: "mom-paypal@example.com",
 
@@ -53,7 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Modal Summary Elements
   const modalQty = document.getElementById("modal-qty");
-  const successQtyText = document.getElementById("success-qty-text");
+  const modalTotalPrice = document.getElementById("modal-total-price");
+  const confirmPayAmount = document.getElementById("confirm-pay-amount");
 
   // Payment Display Elements
   const displayPaypal = document.getElementById("display-paypal");
@@ -75,9 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (displayCashApp) displayCashApp.textContent = STORE_CONFIG.cashAppHandle;
   if (displayZelle) displayZelle.textContent = STORE_CONFIG.zelleInfo;
 
-  // Format quantity label (e.g. "1 Bracelet" vs "3 Bracelets")
-  function formatQtyLabel(qty) {
-    return qty === 1 ? "1 Bracelet" : `${qty} Bracelets`;
+  // Pricing: $5 a piece or 3 for $12 (groups of 3 are $12, rest $5 each)
+  function calculatePrice(qty) {
+    if (qty === 1) return STORE_CONFIG.itemPrice;
+    if (qty === 2) return STORE_CONFIG.itemPrice * 2;
+    if (qty === 3) return STORE_CONFIG.threePackPrice;
+
+    const threePacks = Math.floor(qty / 3);
+    const singles = qty % 3;
+    return (threePacks * STORE_CONFIG.threePackPrice) + (singles * STORE_CONFIG.itemPrice);
   }
 
   // Update UI totals and active bundle cards
@@ -87,13 +96,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (qty > 50) qty = 50;
     qtyInput.value = qty;
 
-    const label = formatQtyLabel(qty);
+    const price = calculatePrice(qty);
+    const formattedTotal = `${STORE_CONFIG.currencySymbol}${price.toFixed(2)}`;
 
-    if (calculatedTotal) calculatedTotal.textContent = label;
-    if (btnTotalLabel) btnTotalLabel.textContent = label;
-    if (mobileStickyPrice) mobileStickyPrice.textContent = label;
-    if (modalQty) modalQty.textContent = label;
-    if (successQtyText) successQtyText.textContent = label;
+    if (calculatedTotal) calculatedTotal.textContent = formattedTotal;
+    if (btnTotalLabel) btnTotalLabel.textContent = formattedTotal;
+    if (mobileStickyPrice) mobileStickyPrice.textContent = formattedTotal;
+    if (modalQty) modalQty.textContent = qty;
+    if (modalTotalPrice) modalTotalPrice.textContent = formattedTotal;
+    if (confirmPayAmount) confirmPayAmount.textContent = formattedTotal;
 
     // Highlight matching bundle card if quantity matches
     bundleCards.forEach((card) => {
@@ -107,8 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update Quick SMS Order link
     if (btnSmsOrder) {
+      const itemDescription = qty === 3 ? "a Gift 3-Pack" : (qty === 1 ? "1 bracelet" : `${qty} bracelets`);
       const smsBody = encodeURIComponent(
-        `Hi! I'd like to order ${label} of The Salvation Story Bracelet. My name is [Name] and my shipping address is: [Address]. Please let me know the price and PayPal details to send payment!`
+        `Hi! I'd like to order ${itemDescription} of The Salvation Story Bracelet for ${formattedTotal}. My name is [Name] and my shipping address is: [Address].`
       );
       btnSmsOrder.href = `sms:${STORE_CONFIG.notificationPhone}?body=${smsBody}`;
     }
@@ -198,7 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(customerOrderForm);
       const qty = parseInt(qtyInput.value, 10) || 1;
-      const label = formatQtyLabel(qty);
+      const totalNumber = calculatePrice(qty);
+      const totalFormatted = `${STORE_CONFIG.currencySymbol}${totalNumber.toFixed(2)}`;
 
       const orderPayload = {
         orderId: "ORD-" + Date.now().toString(36).toUpperCase(),
@@ -217,7 +230,8 @@ document.addEventListener("DOMContentLoaded", () => {
         city: formData.get("city")?.trim(),
         zip: formData.get("zip")?.trim(),
         numberOfBracelets: qty,
-        totalPaid: "Price TBD",
+        totalPaid: totalFormatted,
+        totalRaw: totalNumber,
         paymentMethod: formData.get("payment_method"),
         specialNotes: formData.get("notes")?.trim() || "None",
         fulfillmentStatus: "Pending Shipment"
@@ -253,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Reset loading state
-      if (submitBtnText) submitBtnText.textContent = "SUBMIT ORDER REQUEST";
+      if (submitBtnText) submitBtnText.textContent = "COMPLETE ORDER REQUEST";
       if (submitBtnSpinner) submitBtnSpinner.classList.add("hidden");
 
       // Switch to confirmation modal
